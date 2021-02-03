@@ -39,13 +39,4 @@ class StoriesController < ApplicationController
       render json: {error: e.message}, status: 400
     end
   end
-
-  private
-
-    # def get_canonical_url(url)
-    #   page = Nokogiri::HTML(open(url))
-    #   canonical_url = page.search("link[rel='canonical']").first.try(:[], "href")
-    #   og_url = page.search("meta[property='og:url']").first.try(:[], "content")
-    #   canonical_url || og_url || url
-    # end
 end
