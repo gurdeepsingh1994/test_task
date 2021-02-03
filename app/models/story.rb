@@ -1,4 +1,3 @@
-#["id", "url", "canonical_url", "og_type", "title", "scrape_status", "created_at", "updated_at"]
 class Story < ApplicationRecord
   validates :canonical_url, uniqueness: true, presence: true
   has_many :images, dependent: :destroy

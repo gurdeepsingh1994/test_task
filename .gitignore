@@ -33,3 +33,5 @@
 
 # Ignore schem.rb
 /db/schema.rb
+
+/config/credentials/production.key
