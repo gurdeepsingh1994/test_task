@@ -5,16 +5,13 @@ class ScrapeUrlJob < ApplicationJob
 
   def perform(story)
     begin
-      page = Nokogiri::HTML(open(story.canonical_url))
-      story.title = page.search("meta[property='og:title']").first.try(:[], "content")
-      story.og_type = page.search("meta[property='og:type']").first.try(:[], "content")
-      story.scrape_status = "done"
-      story.save
+      scrape_data = ScrapeDataCreator.get_data(story.canonical_url)
 
-      images_data = page.search(
-      "meta[property='og:image'], meta[property='og:image:width'],
-      meta[property='og:image:height'], meta[property='og:image:alt'],
-      meta[property='og:image:type']")
+      story.title = scrape_data[:title]
+      story.og_type = scrape_data[:type]
+      story.scrape_status = "done"
+      story.save!
+      images_data = scrape_data[:images_data]
 
       images_data.each do |obj|
         if (obj['property'] == "og:image")

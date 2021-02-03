@@ -12,7 +12,7 @@ class StoriesController < ApplicationController
           )
         )}, status: 200
     else
-      render json: {error: "There is not any story with given uniqe id."}, status: 400
+      render json: {error: "Story not found with given unique id."}, status: 400
     end
   end
 
@@ -24,7 +24,7 @@ class StoriesController < ApplicationController
       if input_url.present?
         story = input_url.story
       else
-        canonical_url = get_canonical_url(url)
+        canonical_url = ScrapeDataCreator.get_canonical_url(url)
         story = Story.find_by_canonical_url(canonical_url)
         if story.present?
           InputUrl.create(url: url, story: story )
@@ -36,26 +36,16 @@ class StoriesController < ApplicationController
       end
       render json: {story_id: story.id}, status: 200
     rescue => e
-      render json: {error: e}, status: 400
+      render json: {error: e.message}, status: 400
     end
   end
 
   private
 
-    def get_canonical_url(url)
-      page = Nokogiri::HTML(open(url))
-      canonical_url = page.search("link[rel='canonical']").first.try(:[], "href")
-      og_url = page.search("meta[property='og:url']").first.try(:[], "content")
-      if canonical_url.present?
-        canonical_url
-      elsif og_url.present?
-        og_url
-      else
-        url
-      end
-    end
-
-    def story_params
-      params.require(:story).permit(:url, :canonical_url, :type, :title, :scrape_status)
-    end
+    # def get_canonical_url(url)
+    #   page = Nokogiri::HTML(open(url))
+    #   canonical_url = page.search("link[rel='canonical']").first.try(:[], "href")
+    #   og_url = page.search("meta[property='og:url']").first.try(:[], "content")
+    #   canonical_url || og_url || url
+    # end
 end

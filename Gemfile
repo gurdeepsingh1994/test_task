@@ -8,6 +8,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3', '~> 1.4'
 gem 'mysql2', '~> 0.5.2'
+gem 'figaro'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -29,6 +30,8 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'metainspector', '~> 5.11', '>= 5.11.1'
 
 gem 'sidekiq', '~> 4.1', '>= 4.1.2'
+
+gem 'active_model_serializers'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
